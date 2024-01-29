@@ -9,7 +9,7 @@ COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
 COPY gentoobinhost.conf /etc/portage/binrepos.conf/gentoobinhost.conf
 
 RUN echo 'FEATURES="${FEATURES} binpkg-request-signature"' >> /etc/portage/make.conf && \
-    emerge -g sys-devel/crossdev sys-devel/clang:$LLVM_SLOT sys-devel/lld:$LLVM_SLOT dev-vcs/git
+    emerge -g sys-devel/crossdev sys-devel/clang:$LLVM_SLOT sys-devel/lld:$LLVM_SLOT dev-vcs/git app-containers/buildah
 
 RUN mkdir -p /var/db/repos/crossdev/{profiles,metadata} && \
     echo 'crossdev' > /var/db/repos/crossdev/profiles/repo_name && \
