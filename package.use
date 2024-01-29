@@ -1,0 +1,4 @@
+# required by app-containers/containers-common-0.57.0::gentoo
+# required by app-containers/buildah-1.34.0::gentoo
+# required by app-containers/buildah (argument)
+>=net-firewall/iptables-1.8.9 nftables
