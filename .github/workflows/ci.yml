@@ -51,7 +51,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: ${{ env.IMAGE_NAME }}
-          tags: ${{ matrix.config.arch }}
+          tags: ${{ matrix.config.arch }}-llvm${{ env.LLVM_SLOT }}
           labels: ${{ steps.meta.outputs.labels }}
           args: |
             ARCH=${{ matrix.config.arch }}
