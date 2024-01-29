@@ -5,6 +5,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+  LLVM_SLOT: 17
 
 on:
   push:
@@ -52,15 +53,17 @@ jobs:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ matrix.config.arch }}
           labels: ${{ steps.meta.outputs.labels }}
-          containerfiles: |
-            Containerfile.${{ matrix.config.arch }}
+          args: |
+            ARCH=${{ matrix.config.arch }}
+            LLVM_SLOT=${{ env.LLVM_SLOT }}
+          containerfiles: Containerfile
 
       - name: Push image
         id: push-image
         uses: redhat-actions/push-to-registry@v2
         with:
           image: ${{ steps.build-image.outputs.image }}
-          tags: ${{ matrix.config.arch }}
+          tags: ${{ matrix.config.arch }}-llvm${{ env.LLVM_SLOT }}
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
