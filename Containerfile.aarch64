@@ -1,0 +1,16 @@
+from docker.io/gentoo/stage3
+
+COPY gentoobinhost.conf /etc/portage/binrepos.conf/gentoobinhost.conf
+
+RUN echo 'FEATURES="${FEATURES} binpkg-request-signature"' >> /etc/portage/make.conf && \
+    emerge-webrsync && \
+    emerge -g crossdev clang
+
+RUN mkdir -p /var/db/repos/crossdev/{profiles,metadata} && \
+    echo 'crossdev' > /var/db/repos/crossdev/profiles/repo_name && \
+    echo 'masters = gentoo' > /var/db/repos/crossdev/metadata/layout.conf && \
+    chown -R portage:portage /var/db/repos/crossdev
+
+COPY crossdev.conf /etc/portage/repos.conf/crossdev.conf
+
+RUN crossdev -L -t aarch64-unknown-linux-musl

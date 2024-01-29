@@ -1,0 +1,68 @@
+name: Build and push images
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - name: aarch64
+            arch: aarch64
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Docker Metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha
+            type=ref,event=branch
+            type=ref,event=pr
+            type=ref,event=tag
+            type=schedule
+
+      - name: Build image
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          platforms: linux/amd64, linux/arm64
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ github.ref_name }} ${{ github.sha }}
+          labels: ${{ steps.meta.outputs.labels }}
+          containerfiles: |
+            Containerfile.${{ matrix.config.arch }}
+
+      - name: Push image
+        id: push-image
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ matrix.config.arch }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
