@@ -53,7 +53,7 @@ jobs:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ matrix.config.arch }}-llvm${{ env.LLVM_SLOT }}
           labels: ${{ steps.meta.outputs.labels }}
-          args: |
+          build-args: |
             ARCH=${{ matrix.config.arch }}
             LLVM_SLOT=${{ env.LLVM_SLOT }}
           containerfiles: Containerfile
