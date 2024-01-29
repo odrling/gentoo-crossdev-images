@@ -6,7 +6,7 @@ COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
 COPY gentoobinhost.conf /etc/portage/binrepos.conf/gentoobinhost.conf
 
 RUN echo 'FEATURES="${FEATURES} binpkg-request-signature"' >> /etc/portage/make.conf && \
-    emerge -g crossdev clang lld
+    emerge -g crossdev clang lld git
 
 RUN mkdir -p /var/db/repos/crossdev/{profiles,metadata} && \
     echo 'crossdev' > /var/db/repos/crossdev/profiles/repo_name && \
