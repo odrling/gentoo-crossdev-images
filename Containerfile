@@ -19,6 +19,6 @@ RUN mkdir -p /var/db/repos/crossdev/{profiles,metadata} && \
 
 COPY crossdev.conf /etc/portage/repos.conf/crossdev.conf
 
-RUN crossdev -L -t $TARGET && USE=static-libs $TARGET-emerge -gv openssl
+RUN crossdev -L -t $TARGET && USE="-* static-libs seccomp idn tls-heartbeat zlib gmp" $TARGET-emerge -v gnutls
 
 RUN rm -r /var/cache
