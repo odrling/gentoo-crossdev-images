@@ -19,4 +19,4 @@ RUN mkdir -p /var/db/repos/crossdev/{profiles,metadata} && \
 
 COPY crossdev.conf /etc/portage/repos.conf/crossdev.conf
 
-RUN crossdev -L -t $TARGET
+RUN crossdev -L -t $TARGET && USE=static-libs $TARGET-emerge -gv openssl
