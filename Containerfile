@@ -21,4 +21,4 @@ COPY crossdev.conf /etc/portage/repos.conf/crossdev.conf
 
 RUN crossdev -L -t $TARGET && USE="-* static-libs seccomp idn tls-heartbeat zlib gmp" $TARGET-emerge -v gnutls
 
-RUN rm -r /var/cache
+RUN rm -r /var/cache /var/db/repos
