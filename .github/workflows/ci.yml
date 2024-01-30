@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.config.name }}
+    name: ${{ matrix.config.arch }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -27,8 +27,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - name: aarch64
-            arch: aarch64
+          - arch: aarch64
+            target: aarch64-unknown-linux-musl
+          - arch: x86_64
+            target: x86_64-unknown-linux-musl
 
     steps:
       - uses: actions/checkout@v4
@@ -54,7 +56,7 @@ jobs:
           tags: ${{ matrix.config.arch }}-llvm${{ env.LLVM_SLOT }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            ARCH=${{ matrix.config.arch }}
+            TARGET=${{ matrix.config.target }}
             LLVM_SLOT=${{ env.LLVM_SLOT }}
           containerfiles: Containerfile
 

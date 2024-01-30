@@ -2,7 +2,7 @@ FROM docker.io/gentoo/portage as portage
 
 FROM docker.io/gentoo/stage3
 
-ARG ARCH
+ARG TARGET
 ARG LLVM_SLOT=17
 
 COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
@@ -19,4 +19,4 @@ RUN mkdir -p /var/db/repos/crossdev/{profiles,metadata} && \
 
 COPY crossdev.conf /etc/portage/repos.conf/crossdev.conf
 
-RUN crossdev -L -t aarch64-unknown-linux-musl
+RUN crossdev -L -t $TARGET
