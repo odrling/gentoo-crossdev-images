@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.config.arch }}
+    name: ${{ matrix.config.arch }} ${{ matrix.config.libc }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
