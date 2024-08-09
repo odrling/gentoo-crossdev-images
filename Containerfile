@@ -19,6 +19,6 @@ RUN mkdir -p /var/db/repos/crossdev/{profiles,metadata} && \
 
 COPY crossdev.conf /etc/portage/repos.conf/crossdev.conf
 
-RUN crossdev -L -t $TARGET
+RUN FEATURES="${FEATURES} -ipc-sandbox -network-sandbox -pid-sandbox binpkg-request-signature" crossdev -L -t $TARGET
 
 RUN rm -r /var/cache /var/db/repos
