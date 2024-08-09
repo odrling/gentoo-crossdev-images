@@ -28,9 +28,11 @@ jobs:
       matrix:
         config:
           - arch: aarch64
-            target: aarch64-unknown-linux-musl
+            libc: musl
+          - arch: aarch64
+            libc: glibc
           - arch: x86_64
-            target: x86_64-unknown-linux-musl
+            libc: musl
 
     steps:
       - uses: actions/checkout@v4
@@ -53,10 +55,10 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: ${{ env.IMAGE_NAME }}
-          tags: ${{ matrix.config.arch }}-llvm${{ env.LLVM_SLOT }}
+          tags: ${{ matrix.config.arch }}-${{ matrix.config.libc }}-llvm${{ env.LLVM_SLOT }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            TARGET=${{ matrix.config.target }}
+            TARGET=${{ matrix.config.arch }}-unknown-linux-${{ matrix.config.libc }}
             LLVM_SLOT=${{ env.LLVM_SLOT }}
           containerfiles: Containerfile
 
