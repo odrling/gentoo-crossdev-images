@@ -30,7 +30,7 @@ jobs:
           - arch: aarch64
             libc: musl
           - arch: aarch64
-            libc: glibc
+            libc: gnu
           - arch: x86_64
             libc: musl
 
