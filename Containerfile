@@ -3,7 +3,6 @@ FROM docker.io/gentoo/portage as portage
 FROM docker.io/gentoo/stage3:nomultilib
 
 ARG TARGET
-ARG LLVM_SLOT=17
 
 COPY --from=portage /var/db/repos/gentoo /var/db/repos/gentoo
 COPY gentoobinhost.conf /etc/portage/binrepos.conf/gentoobinhost.conf
