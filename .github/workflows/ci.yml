@@ -55,7 +55,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          tags: ${{ env.IMAGE_NAME }}:${{ matrix.config.arch }}-${{ matrix.config.libc }}
+          tags: ghrc.io/${{ env.IMAGE_NAME }}:${{ matrix.config.arch }}-${{ matrix.config.libc }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             TARGET=${{ matrix.config.arch }}-unknown-linux-${{ matrix.config.libc }}
