@@ -61,6 +61,7 @@ jobs:
             TARGET=${{ matrix.config.arch }}-unknown-linux-${{ matrix.config.libc }}
             LLVM_SLOT=${{ env.LLVM_SLOT }}
           containerfiles: Containerfile
+          extra-args: --cap-add=SYS_PTRACE
 
       - name: Push image
         id: push-image
