@@ -11,6 +11,7 @@ COPY package.use /etc/portage/package.use/gentoo-crossdev-image
 
 RUN echo 'FEATURES="${FEATURES} binpkg-request-signature"' >> /etc/portage/make.conf && \
     echo 'CPU_FLAGS_X86="avx avx2 f16c fma3 mmx mmxext popcnt sse sse2 sse3 sse4_1 sse4_2 ssse3"' >> /etc/portage/make.conf && \
+    echo 'USE="libass x264 opus"' >> /etc/portage/make.conf && \
     emerge -uvNDg @world sys-devel/crossdev sys-devel/clang:$LLVM_SLOT sys-devel/lld:$LLVM_SLOT dev-vcs/git dev-build/meson dev-lang/go net-libs/nodejs media-video/ffmpeg media-libs/libass
 
 RUN mkdir -p /var/db/repos/crossdev/{profiles,metadata} && \
