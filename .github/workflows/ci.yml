@@ -50,26 +50,14 @@ jobs:
             type=ref,event=tag
             type=schedule
 
-      - name: Build image
+      - name: Build and push image
         id: build-image
-        uses: redhat-actions/buildah-build@v2
+        uses: docker/build-push-action@v6
         with:
-          image: ${{ env.IMAGE_NAME }}
-          tags: ${{ matrix.config.arch }}-${{ matrix.config.libc }}-llvm${{ env.LLVM_SLOT }}
+          context: .
+          tags: ${{ env.IMAGE_NAME }}:${{ matrix.config.arch }}-${{ matrix.config.libc }}-llvm${{ env.LLVM_SLOT }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             TARGET=${{ matrix.config.arch }}-unknown-linux-${{ matrix.config.libc }}
             LLVM_SLOT=${{ env.LLVM_SLOT }}
-          containerfiles: Containerfile
-          extra-args: --cap-add=SYS_PTRACE
-
-      - name: Push image
-        id: push-image
-        uses: redhat-actions/push-to-registry@v2
-        with:
-          image: ${{ steps.build-image.outputs.image }}
-          tags: ${{ matrix.config.arch }}-llvm${{ env.LLVM_SLOT }}
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
+          file: Containerfile
