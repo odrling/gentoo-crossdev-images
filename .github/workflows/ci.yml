@@ -61,3 +61,4 @@ jobs:
             TARGET=${{ matrix.config.arch }}-unknown-linux-${{ matrix.config.libc }}
             LLVM_SLOT=${{ env.LLVM_SLOT }}
           file: Containerfile
+          push: true
